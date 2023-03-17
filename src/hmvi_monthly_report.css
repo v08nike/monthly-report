@@ -1,0 +1,15 @@
+.autocomplete-item-disable {
+  padding: 8px;
+  padding-left: 10px;
+  border-bottom: 1px solid #3c3c3c;
+  background-color: rgb(185, 185, 185);
+  cursor:not-allowed;
+}
+
+.autocomplete-item-disable:hover {
+  background-color: rgb(201, 201, 201);
+}
+
+.input-group-addon:hover{
+  background-color: rgba(238, 238, 238, 0.534);
+}

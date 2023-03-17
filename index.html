@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>HousingIQ</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./src/hmvi_monthly_report.bootstrap.css">
+  <link rel="stylesheet" href="./src/hmvi_monthly_report.css">
+    <!--  highcharts-->
+  <script src="https://code.highcharts.com/stock/highstock.js"></script>
+  <script src="https://code.highcharts.com/maps/modules/map.js"></script>
+  <script src="https://code.highcharts.com/modules/series-label.js"></script>
+  <script src="https://code.highcharts.com/modules/annotations.js"></script>
+  <script src="https://code.highcharts.com/mapdata/countries/us/us-all.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/accessibility.js"></script>
+</head>
+
+<body>
+  <div class="hmvi-x-monthly-report">
+    <div class="container">
+      <div id="report_banner">
+        <div class="hmvi-x-font-title">Taking the Pulse</div>
+        <div class="hmvi-x-font-main hmvi-x-font-align-center" id="report_date"></div>
+      </div>
+      <div id="report_main_contents">
+        <div class="hmvi-x-margin-paragraph" id="us_summary">
+          <div class="row">
+            <div class="col-xl-4 hmvi-x-vertical-center hmvi-x-margin-paragraph">
+              <div class="hmvi-x-font-main hmvi-x-vertical-center" id="us_overview"></div>
+              <div class="hmvi-x-font-paragraph hmvi-x-margin-paragraph hmvi-x-font-justify" id="us_overview_2"></div>
+            </div>
+            <div class="col-xl-8 hmvi-x-vertical-center hmvi-x-margin-paragraph">
+              <div id="us_summary_chart"></div>
+            </div>
+          </div>
+        </div>
+        <div class="hmvi-x-margin-main" id="state_summary">
+          <div class="hmvi-x-font-main hmvi-x-font-justify" id="state_overview"></div>
+          <div class="hmvi-x-font-paragraph hmvi-x-margin-paragraph hmvi-x-font-justify"
+            id="state_performance_overview"></div>
+          <div class="hmvi-x-margin-paragraph">
+            <div class="row">
+              <div class="col-xl-6">
+                <div id="state_summary_map"></div>
+              </div>
+              <div class="col-xl-6">
+                <div class="row  hmvi-x-margin-paragraph">
+                  <div class="col-sm-6 hmvi-x-font-paragraph hmvi-x-paragraph-vertical">
+                    <div class="row">
+                      <div class="col-lg-4 col-12 col-xl-12">
+                        <span class="hmvi-x-font-green hmvi-x-font-bold">Top 3 States</span>
+                      </div>
+                      <div class="col-lg-6 col-12 col-xl-12">
+                        <span class="hmvi-x-font-black hmvi-x-paragraph-horizontal">Forecasted Appreciation (%)</span>
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <div id="top_states_11"></div>
+                      <div class="" id="top_states_12"></div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <div class="" id="top_states_21"></div>
+                      <div class="" id="top_states_22"></div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <div class="" id="top_states_31"></div>
+                      <div class="" id="top_states_32"></div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 hmvi-x-font-paragraph hmvi-x-paragraph-vertical">
+                    <div class="row">
+                      <div class="col-lg-4 col-12 col-xl-12">
+                        <span class="hmvi-x-font-red hmvi-x-font-bold">Bottom 3 States</span>
+                      </div>
+                      <div class="col-lg-6 col-12 col-xl-12">
+                        <span class="hmvi-x-font-black hmvi-x-paragraph-horizontal">Forecasted Appreciation (%)</span>
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <div class="" id="bottom_states_11"></div>
+                      <div class="" id="bottom_states_12"></div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <div class="" id="bottom_states_21"></div>
+                      <div class="" id="bottom_states_22"></div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <div class="" id="bottom_states_31"></div>
+                      <div class="" id="bottom_states_32"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="table-responsive hmvi-x-margin-paragraph">
+                  <table
+                    class="table hmvi-x-font-paragraph hmvi-x-font-align-center hmvi-x-table-overflow-hidden  hmvi-x-vertical-center"
+                    id="state_performance_table">
+                    <tr>
+                      <td class="hmvi-x-table-none-border"></td>
+                      <td class="hmvi-x-table-none-border hmvi-x-font-bold" colspan="4">Forecasted</td>
+                    </tr>
+                    <tr>
+                      <td class="hmvi-x-table-none-border hmvi-x-font-bold">Current</td>
+                      <td class="hmvi-x-table-none-border hmvi-x-vertical-center">
+                        <i class="fa fa-arrow-circle-up" aria-hidden="true" style='font-size:24px; color: #7cc576'></i>
+                      </td>
+                      <td class="hmvi-x-table-none-border hmvi-x-vertical-center">
+                        <i class="fa fa-minus-circle" aria-hidden="true" style="font-size: 24px; color: #6dcff6"></i>
+                      </td>
+                      <td class="hmvi-x-table-none-border hmvi-x-vertical-center">
+                        <i class="fa fa-arrow-circle-down" aria-hidden="true"
+                          style='font-size:24px; color: #f26c4f'></i>
+                      </td>
+                      <td class="hmvi-x-table-none-border">Total</td>
+                    </tr>
+                    <tr>
+                      <td class="hmvi-x-table-none-border hmvi-x-vertical-center">
+                        <i class="fa fa-arrow-circle-up" aria-hidden="true" style='font-size:24px; color: #7cc576'></i>
+                      </td>
+                      <td class="hmvi-x-table-solid-border" id="performance_states_11"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_states_12"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_states_13"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_states_14"></td>
+                    </tr>
+                    <tr>
+                      <td class="hmvi-x-table-none-border hmvi-x-vertical-center">
+                        <i class="fa fa-minus-circle" aria-hidden="true" style="font-size: 24px; color: #6dcff6"></i>
+                      </td>
+                      <td class="hmvi-x-table-solid-border" id="performance_states_21"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_states_22"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_states_23"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_states_24"></td>
+                    </tr>
+                    <tr>
+                      <td class="hmvi-x-table-none-border hmvi-x-vertical-center">
+                        <i class="fa fa-arrow-circle-down" aria-hidden="true"
+                          style='font-size:24px; color: #f26c4f'></i>
+                      </td>
+                      <td class="hmvi-x-table-solid-border" id="performance_states_31"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_states_32"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_states_33"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_states_34"></td>
+                    </tr>
+                    <tr>
+                      <td class="hmvi-x-table-none-border">Total</td>
+                      <td class="hmvi-x-table-solid-border" id="performance_states_41"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_states_42"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_states_43"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_states_44"></td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hmvi-x-margin-main" id="metro_summary">
+          <div class="hmvi-x-font-main hmvi-x-font-justify" id="metro_overview"></div>
+          <div class="hmvi-x-font-paragraph hmvi-x-margin-paragraph hmvi-x-font-justify"
+            id="metro_performance_overview"></div>
+          <div class="hmvi-x-margin-paragraph">
+            <div class="row">
+              <div class="col-xl-6">
+                <div class="table-responsive">
+                  <table
+                    class="table hmvi-x-font-paragraph hmvi-x-font-align-center hmvi-x-table-overflow-hidden  hmvi-x-vertical-center"
+                    id="metro_performance_table">
+                    <tr>
+                      <td class="hmvi-x-table-none-border"></td>
+                      <td class="hmvi-x-table-none-border hmvi-x-font-bold" colspan="4">Forecasted</td>
+                    </tr>
+                    <tr>
+                      <td class="hmvi-x-table-none-border hmvi-x-font-bold">Current</td>
+                      <td class="hmvi-x-table-none-border hmvi-x-vertical-center">
+                        <i class="fa fa-arrow-circle-up" aria-hidden="true" style='font-size:24px; color: #7cc576'></i>
+                      </td>
+                      <td class="hmvi-x-table-none-border hmvi-x-vertical-center">
+                        <i class="fa fa-minus-circle" aria-hidden="true" style="font-size: 24px; color: #6dcff6"></i>
+                      </td>
+                      <td class="hmvi-x-table-none-border hmvi-x-vertical-center">
+                        <i class="fa fa-arrow-circle-down" aria-hidden="true"
+                          style='font-size:24px; color: #f26c4f'></i>
+                      </td>
+                      <td class="hmvi-x-table-none-border">Total</td>
+                    </tr>
+                    <tr>
+                      <td class="hmvi-x-table-none-border hmvi-x-vertical-center">
+                        <i class="fa fa-arrow-circle-up" aria-hidden="true" style='font-size:24px; color: #7cc576'></i>
+                      </td>
+                      <td class="hmvi-x-table-solid-border" id="performance_metros_11"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_metros_12"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_metros_13"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_metros_14"></td>
+                    </tr>
+                    <tr>
+                      <td class="hmvi-x-table-none-border hmvi-x-vertical-center">
+                        <i class="fa fa-minus-circle" aria-hidden="true" style="font-size: 24px; color: #6dcff6"></i>
+                      </td>
+                      <td class="hmvi-x-table-solid-border" id="performance_metros_21"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_metros_22"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_metros_23"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_metros_24"></td>
+                    </tr>
+                    <tr>
+                      <td class="hmvi-x-table-none-border hmvi-x-vertical-center">
+                        <i class="fa fa-arrow-circle-down" aria-hidden="true"
+                          style='font-size:24px; color: #f26c4f'></i>
+                      </td>
+                      <td class="hmvi-x-table-solid-border" id="performance_metros_31"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_metros_32"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_metros_33"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_metros_34"></td>
+                    </tr>
+                    <tr>
+                      <td class="hmvi-x-table-none-border">Total</td>
+                      <td class="hmvi-x-table-solid-border" id="performance_metros_41"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_metros_42"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_metros_43"></td>
+                      <td class="hmvi-x-table-solid-border" id="performance_metros_44"></td>
+                    </tr>
+                  </table>
+                </div>
+
+              </div>
+              <div class="col-xl-6">
+                <div class="row">
+                  <div class="col-xl-12 col-lg-6 col-12">
+                    <div class="hmvi-x-margin-paragraph hmvi-x-font-paragraph hmvi-x-paragraph-vertical">
+                      <div>
+                        <span class="hmvi-x-font-green hmvi-x-font-bold">Top 5 Metros</span>
+                        <span> | </span>
+                        <span class="hmvi-x-font-black hmvi-x-paragraph-horizontal">Forecasted Appreciation (%)</span>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <div id="top_metros_11"></div>
+                        <div id="top_metros_12"></div>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <div id="top_metros_21"></div>
+                        <div id="top_metros_22"></div>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <div id="top_metros_31"></div>
+                        <div id="top_metros_32"></div>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <div id="top_metros_41"></div>
+                        <div id="top_metros_42"></div>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <div id="top_metros_51"></div>
+                        <div id="top_metros_52"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xl-12 col-lg-6 col-12">
+                    <div class="hmvi-x-margin-paragraph hmvi-x-font-paragraph hmvi-x-paragraph-vertical">
+                      <div>
+                        <span class="hmvi-x-font-red hmvi-x-font-bold">Bottom 5 Metros</span>
+                        <span> | </span>
+                        <span class="hmvi-x-font-black hmvi-x-paragraph-horizontal">Forecasted Appreciation (%)</span>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <div id="bottom_metros_11"></div>
+                        <div id="bottom_metros_12"></div>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <div id="bottom_metros_21"></div>
+                        <div id="bottom_metros_22"></div>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <div id="bottom_metros_31"></div>
+                        <div id="bottom_metros_32"></div>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <div id="bottom_metros_41"></div>
+                        <div id="bottom_metros_42"></div>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <div id="bottom_metros_51"></div>
+                        <div id="bottom_metros_52"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hmvi-x-margin-main" id="us_explorer">
+          <div class="hmvi-x-font-main hmvi-x-font-justify">US HMVI Explorer</div>
+          <div class="hmvi-x-font-paragraph hmvi-x-margin-paragraph hmvi-x-font-justify">The US Housing Market Vitality
+            Indicator measures the aggregate impact of economic factors on US house prices. </div>
+          <div class="hmvi-x-margin-paragraph">
+            <div id="us_chart" style="height:600px; width: 100%;"></div>
+          </div>
+        </div>
+        <div id="states_explorer" data-id="states">
+          <div class="hmvi-x-margin-main">
+            <div class="hmvi-x-font-main hmvi-x-font-justify">State HMVI Explorer</div>
+            <div class="hmvi-x-font-paragraph hmvi-x-margin-paragraph hmvi-x-font-justify">State Housing Market Vitality
+              Indicators measure the aggregate impact of economic conditions on house prices statewide. They present a
+              more granular perspective than the US HMVI. State indicators enable objective comparisons among states. They
+              are derived from the metro housing markets comprising each state.</div>
+            <div class="hmvi-x-margin-paragraph">
+              <div style="display: flex; justify-content: flex-end">
+                <button class="explore-btn-rounded" id="states-map-search-btn" title="Search" tag-type="Search" tag-type="welcome">
+                  <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+                <button class="explore-btn-rounded" id="states-map-sort-btn" title="Sort" tag-type="Sort">
+                  <i class="fa fa-sort-amount-desc" aria-hidden="true"></i>
+                </button>
+                <button class="explore-btn-rounded" id="states-map-filter-btn" title="Filter" tag-type="Filter">
+                  <i class="fa fa-filter" aria-hidden="true"></i>
+                </button>
+                <button class="explore-btn-rounded" id="states-map-summary-btn" title="Summary" tag-type="Summary">
+                  <i class="fa fa-info-circle" aria-hidden="true"></i>
+                </button>
+                <button class="explore-btn-rounded" id="states-map-refresh-btn" title="Refresh" tag-type="Refresh">
+                  <i class="fa fa-refresh" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="row">
+                <div class="col-xl-6">
+                  <div id="state_map"></div>
+                </div>
+                <div class="col-xl-6">
+                  <div id="state_barchart"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- State Modals Start -->
+          <div id="states-modals">
+            <div tag-type="search-modal" class="modal">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Search</h4>
+                  <button class="close" type="button" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                  <fieldset>
+                    <div class="hmvi_explorer_autocomplete">
+                      <div class="input-group" style="width: 100%;"> <input id="hmvi_explorer_state_names_input_text" tag-type="hmvi_explorer_input_text"
+                          class="form-control" type="text" placeholder="Enter state name" aria-describedby="basic-addon2"
+                          autofocus> <span id="states-refresh-search" class="input-group-addon" tag-type="input_text_reset" > <span
+                            class="pull-right- fa fa-undo hmvi_explorer_refresh_value"value="hmvi_explorer_reset_state_names"
+                            aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Clear"></span> </span></div>
+                    </div>
+                    <div class="suggestions" tag-type="suggestions"></div>
+                    </ul>
+                    <div id="state_hmvi_explorer_selected" tag-type="hmvi_explorer_itme_selected" class="hmvi_explorer_selected hmvi_explorer_search_items_scroll"></div>
+                  </fieldset>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-info btn-block close-btn" type="button" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          
+            <div tag-type="sort-modal" class="modal">
+              <!-- Modal content -->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Sort By</h4>
+                  <button class="close" type="button" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                  <div class="container-fluid hmvi_explorer_center_filters">
+                    <div id="state_hmvi_explorer_data_set_id" class="hmvi_explorer_data_set_id btn-group btn-group-justified" data-toggle="buttons">
+                      <label id="states-market-rank" tag-type="market_performance" class="btn btn-group-xs btn-default active">
+                        <input id="states-option1" class="hmvi_explorer_data_set_radio" name="options" type="radio"
+                          value="score_pctl">Market Rank
+                      </label>
+                      <label id="states-situation" tag-type="situation" class="btn btn-group-xs btn-default">
+                        <input id="states-option2" class="hmvi_explorer_data_set_radio" name="options" type="radio"
+                          value="situation_pctl">Situation
+                      </label>
+                      <label id="states-outlook" tag-type="outlook" class="btn btn-group-xs btn-default">
+                        <input id="states-option3" class="hmvi_explorer_data_set_radio" name="options" type="radio"
+                          value="outlook_pctl">Outlook
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-info btn-block close-btn" type="button" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          
+            <div tag-type="filter-modal" class="modal">
+              <!-- Modal content -->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Filter</h4>
+                  <button class="close" type="button" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                  <div class="market-rank">
+                    <div class="filter-title">
+                      Market Rank
+                    </div>
+                    <div class="range-slider" tag-type="market-rank-range">
+                      <input value="0" min="0" max="100" step="1" type="range" class="slider slider-n">
+                      <input value="100" min="0" max="100" step="1" type="range" class="slider slider-x">
+                      <div class="slider-values">
+                        <input id="states-slider-min" type="number" value="0" min="0" disabled class="slider-value" tag-type="slider-min">
+                        <input id="states-slider-max" type="number" value="100" min="0" disabled class="slider-value" tag-type="slider-max">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="market-rank">
+                    <div class="filter-title" style="margin-top: 10px;">
+                      Situation
+                    </div>
+                    <div class="situation">
+                      <label class="switch">
+                        <input type="checkbox" checked id="states-outperforming" tag-type="outperforming">
+                        <span class="slider round"></span>
+                        <label class="switch-label">Outperforming</label>
+                      </label>
+                      <label class="switch">
+                        <input type="checkbox" checked id="states-tracking" tag-type="tracking">
+                        <span class="slider round"></span>
+                        <label class="switch-label">Tracking</label>
+                      </label>
+                      <label class="switch">
+                        <input type="checkbox" checked id="states-underperforming" tag-type="underperforming">
+                        <span class="slider round"></span>
+                        <label class="switch-label">Underperforming</label>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="market-rank">
+                    <div class="filter-title" style="margin-top: 10px;">
+                      Outlook
+                    </div>
+                    <div class="situation">
+                      <label class="switch">
+                        <input type="checkbox" checked id="states-outperform" tag-type="outperform">
+                        <span class="slider round"></span>
+                        <label class="switch-label">Outperform</label>
+                      </label>
+                      <label class="switch">
+                        <input type="checkbox" checked id="states-track" tag-type="track">
+                        <span class="slider round"></span>
+                        <label class="switch-label">Track</label>
+                      </label>
+                      <label class="switch">
+                        <input type="checkbox" checked id="states-underperform" tag-type="underperform">
+                        <span class="slider round"></span>
+                        <label class="switch-label">Underperform</label>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-info btn-block close-btn" type="button" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          
+            <div tag-type="summary-modal" class="modal">
+              <!-- Modal content -->
+              <div class="modal-content summary-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Summary</h4>
+                  <button class="close" type="button" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                  <div id="states-summary-content" tag-type="summary-content">
+                    Displaying 100.0% (402 of 402) markets
+                    Market Rank range: 0 to 100 percentile
+                  </div>
+                  <div id="states-grid" tag-type="grid">
+                    <table>
+                      <tr>
+                        <th></th>
+                        <th colspan="4">Outlook</th>
+                      </tr>
+                      <tr>
+                        <th>Situation</th>
+                        <th>Outperform</th>
+                        <th>Track</th>
+                        <th>Underperform</th>
+                        <th>Total - Situation</th>
+                      </tr>
+                      <tr>
+                        <th>Outperforming</th>
+                        <td id="states-outperforming-outperform" tag-type="outperforming-outperform">19%</td>
+                        <td id="states-outperforming-track" tag-type="outperforming-track">39%</td>
+                        <td id="states-outperforming-underperform" tag-type="outperforming-underperform">10%</td>
+                        <td id="states-outperforming-total" tag-type="outperforming-total">11%</td>
+                      </tr>
+                      <tr>
+                        <th>Tracking</th>
+                        <td id="states-tracking-outperform" tag-type="tracking-outperform">19%</td>
+                        <td id="states-tracking-track" tag-type="tracking-track">39%</td>
+                        <td id="states-tracking-underperform"  tag-type="tracking-underperform">10%</td>
+                        <td id="states-tracking-total" tag-type="tracking-total">11%</td>
+                      </tr>
+                      <tr>
+                        <th>Underperforming</th>
+                        <td id="states-underperforming-outperform" tag-type="underperforming-outperform">19%</td>
+                        <td id="states-underperforming-track" tag-type="underperforming-track">39%</td>
+                        <td id="states-underperforming-underperform" tag-type="underperforming-underperform">10%</td>
+                        <td id="states-underperforming-total" tag-type="underperforming-total">11%</td>
+                      </tr>
+                      <tr>
+                        <th>Total - Outlook</th>
+                        <td id="states-total-outperform" tag-type="total-outperform">19%</td>
+                        <td id="states-total-track" tag-type="total-track">39%</td>
+                        <td id="states-total-underperform" tag-type="total-underperform">10%</td>
+                        <td id="states-total-total" tag-type="total-total">11%</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-info btn-block close-btn" type="button" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- State Modals End -->
+        </div>
+        <div id="metro_explorer" data-id="metro">
+          <div class="hmvi-x-margin-main">
+            <div class="hmvi-x-font-main hmvi-x-font-justify">Metro HMVI Explorer</div>
+            <div class="hmvi-x-font-paragraph hmvi-x-margin-paragraph hmvi-x-font-justify">The Metro Housing Market
+              Vitality Indicators measure the performance of metro housing markets relative to the national market. They
+              answer the question: How will the change in house prices in a particular market compare to the change in
+              house prices across the US?</div>
+            <div class="hmvi-x-margin-paragraph">
+              <div style="display: flex; justify-content: flex-end">
+                <button class="explore-btn-rounded" id="metro-map-search-btn" title="Search" tag-type="Search">
+                  <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+                <button class="explore-btn-rounded" id="metro-map-sort-btn" title="Sort" tag-type="Sort">
+                  <i class="fa fa-sort-amount-desc" aria-hidden="true"></i>
+                </button>
+                <button class="explore-btn-rounded" id="metro-map-filter-btn" title="Filter" tag-type="Filter">
+                  <i class="fa fa-filter" aria-hidden="true"></i>
+                </button>
+                <button class="explore-btn-rounded" id="metro-map-summary-btn" title="Summary" tag-type="Summary">
+                  <i class="fa fa-info-circle" aria-hidden="true"></i>
+                </button>
+                <button class="explore-btn-rounded" id="metro-map-refresh-btn" title="Refresh" tag-type="Refresh">
+                  <i class="fa fa-refresh" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="row">
+                <div class="col-xl-6">
+                  <div id="metro_map"></div>
+                </div>
+                <div class="col-xl-6">
+                  <div id="metro_barchart"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Metro Modals Start -->
+          <div id="metro-modals">
+            <div tag-type="search-modal" class="modal">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Search</h4>
+                  <button class="close" type="button" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                  <fieldset>
+                    <div class="hmvi_explorer_autocomplete">
+                      <div class="input-group" style="width: 100%;"> <input id="hmvi_explorer_metro_names_input_text" tag-type="hmvi_explorer_input_text"
+                          class="form-control" type="text" placeholder="Enter metro name" aria-describedby="basic-addon2"
+                          autofocus> <span id="metro-basic-addon2" class="input-group-addon"> <span
+                            class="pull-right- fa fa-undo hmvi_explorer_refresh_value" tag-type="input_text_reset" value="hmvi_explorer_reset_metro_names"
+                            aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Clear"></span> </span></div>
+                    </div>
+                    <div class="suggestions" tag-type="suggestions"></div>
+                    </ul>
+                    <div id="metro_hmvi_explorer_selected" tag-type="hmvi_explorer_itme_selected" class="hmvi_explorer_selected hmvi_explorer_search_items_scroll"></div>
+                  </fieldset>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-info btn-block close-btn" type="button" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          
+            <div tag-type="sort-modal" class="modal">
+              <!-- Modal content -->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Sort By</h4>
+                  <button class="close" type="button" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                  <div class="container-fluid hmvi_explorer_center_filters">
+                    <div id="metro_hmvi_explorer_data_set_id" class="hmvi_explorer_data_set_id btn-group btn-group-justified" data-toggle="buttons">
+                      <label id="metro-market-rank" tag-type="market_performance" class="btn btn-group-xs btn-default active">
+                        <input id="metro-option1" class="hmvi_explorer_data_set_radio" name="options" type="radio"
+                          value="score_pctl">Market Rank
+                      </label>
+                      <label id="metro-situation" tag-type="situation" class="btn btn-group-xs btn-default">
+                        <input id="metro-option2" class="hmvi_explorer_data_set_radio" name="options" type="radio"
+                          value="situation_pctl">Situation
+                      </label>
+                      <label id="metro-outlook" tag-type="outlook" class="btn btn-group-xs btn-default">
+                        <input id="metro-option3" class="hmvi_explorer_data_set_radio" name="options" type="radio"
+                          value="outlook_pctl">Outlook
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-info btn-block close-btn" type="button" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          
+            <div tag-type="filter-modal" class="modal">
+              <!-- Modal content -->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Filter</h4>
+                  <button class="close" type="button" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                  <div class="market-rank">
+                    <div class="filter-title">
+                      Market Rank
+                    </div>
+                    <div class="range-slider" tag-type="market-rank-range">
+                      <input value="0" min="0" max="100" step="1" type="range" class="slider slider-n">
+                      <input value="100" min="0" max="100" step="1" type="range" class="slider slider-x">
+                      <div class="slider-values">
+                        <input id="metro-slider-min" type="number" value="0" min="0" disabled class="slider-value" tag-type="slider-min">
+                        <input id="metro-slider-max" type="number" value="100" min="0" disabled class="slider-value" tag-type="slider-max">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="market-rank">
+                    <div class="filter-title" style="margin-top: 10px;">
+                      Situation
+                    </div>
+                    <div class="situation">
+                      <label class="switch">
+                        <input type="checkbox" checked id="metro-outperforming" tag-type="outperforming">
+                        <span class="slider round"></span>
+                        <label class="switch-label">Outperforming</label>
+                      </label>
+                      <label class="switch">
+                        <input type="checkbox" checked id="metro-tracking" tag-type="tracking">
+                        <span class="slider round"></span>
+                        <label class="switch-label">Tracking</label>
+                      </label>
+                      <label class="switch">
+                        <input type="checkbox" checked id="metro-underperforming" tag-type="underperforming">
+                        <span class="slider round"></span>
+                        <label class="switch-label">Underperforming</label>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="market-rank">
+                    <div class="filter-title" style="margin-top: 10px;">
+                      Outlook
+                    </div>
+                    <div class="situation">
+                      <label class="switch">
+                        <input type="checkbox" checked id="metro-outperform" tag-type="outperform">
+                        <span class="slider round"></span>
+                        <label class="switch-label">Outperform</label>
+                      </label>
+                      <label class="switch">
+                        <input type="checkbox" checked id="metro-track" tag-type="track">
+                        <span class="slider round"></span>
+                        <label class="switch-label">Track</label>
+                      </label>
+                      <label class="switch">
+                        <input type="checkbox" checked id="metro-underperform" tag-type="underperform">
+                        <span class="slider round"></span>
+                        <label class="switch-label">Underperform</label>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-info btn-block close-btn" type="button" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+      
+            <div tag-type="summary-modal" class="modal">
+              <!-- Modal content -->
+              <div class="modal-content summary-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Summary</h4>
+                  <button class="close" type="button" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                  <div id="metro-summary-content" tag-type="summary-content">
+                    Displaying 100.0% (402 of 402) markets
+                    Market Rank range: 0 to 100 percentile
+                  </div>
+                  <div id="metro-grid" tag-type="grid">
+                    <table>
+                      <tr>
+                        <th></th>
+                        <th colspan="4">Outlook</th>
+                      </tr>
+                      <tr>
+                        <th>Situation</th>
+                        <th>Outperform</th>
+                        <th>Track</th>
+                        <th>Underperform</th>
+                        <th>Total - Situation</th>
+                      </tr>
+                      <tr>
+                        <th>Outperforming</th>
+                        <td id="metro-outperforming-outperform" tag-type="outperforming-outperform">19%</td>
+                        <td id="metro-outperforming-track" tag-type="outperforming-track">39%</td>
+                        <td id="metro-outperforming-underperform" tag-type="outperforming-underperform">10%</td>
+                        <td id="metro-outperforming-total" tag-type="outperforming-total">11%</td>
+                      </tr>
+                      <tr>
+                        <th>Tracking</th>
+                        <td id="metro-tracking-outperform" tag-type="tracking-outperform">19%</td>
+                        <td id="metro-tracking-track" tag-type="tracking-track">39%</td>
+                        <td id="metro-tracking-underperform"  tag-type="tracking-underperform">10%</td>
+                        <td id="metro-tracking-total" tag-type="tracking-total">11%</td>
+                      </tr>
+                      <tr>
+                        <th>Underperforming</th>
+                        <td id="metro-underperforming-outperform" tag-type="underperforming-outperform">19%</td>
+                        <td id="metro-underperforming-track" tag-type="underperforming-track">39%</td>
+                        <td id="metro-underperforming-underperform" tag-type="underperforming-underperform">10%</td>
+                        <td id="metro-underperforming-total" tag-type="underperforming-total">11%</td>
+                      </tr>
+                      <tr>
+                        <th>Total - Outlook</th>
+                        <td id="metro-total-outperform" tag-type="total-outperform">19%</td>
+                        <td id="metro-total-track" tag-type="total-track">39%</td>
+                        <td id="metro-total-underperform" tag-type="total-underperform">10%</td>
+                        <td id="metro-total-total" tag-type="total-total">11%</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-info btn-block close-btn" type="button" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Metro Modals end -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+<script src="./src/initialize.js"></script>
+<script src="./src/event_handlers.js"></script>
+<script src="./src/hmvi_monthly_report_impl.js"></script>
+</html>
